@@ -1,0 +1,1 @@
+this is some stuff and ideas from working at DTU
