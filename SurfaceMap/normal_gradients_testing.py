@@ -1,5 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from skimage.measure import marching_cubes
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+
+
 
 
 # make some points and normals in 2D
@@ -60,6 +64,52 @@ def make_error_gradient_space(normals):
 
 
     return X,Y,Z, vals
+
+
+def extract_isosurface(volume_data, isovalue):
+    """
+    Extract the isosurface from volumetric data at a specified isovalue.
+
+    Parameters:
+    - volume_data: 3D numpy array of volumetric data.
+    - isovalue: The value at which to extract the isosurface.
+
+    Returns:
+    - verts: Array of vertices of the isosurface.
+    - faces: Array of faces (triangles) of the isosurface.
+    """
+    verts, faces, _, _ = marching_cubes(volume_data, level=isovalue)
+    return verts, faces
+
+def plot_isosurface(verts, faces):
+    """
+    Plot the isosurface using Matplotlib.
+
+    Parameters:
+    - verts: Array of vertices of the isosurface.
+    - faces: Array of faces (triangles) of the isosurface.
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Create a Poly3DCollection object for the isosurface
+    mesh = Poly3DCollection(verts[faces], alpha=0.7)
+    face_color = [0.5, 0.5, 1]
+    mesh.set_facecolor(face_color)
+    ax.add_collection3d(mesh)
+
+    # Auto scale to the mesh size
+    scale = verts.flatten()
+    ax.auto_scale_xyz(scale, scale, scale)
+
+    # Add lighting
+    ax.add_collection3d(mesh)
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+
+    plt.tight_layout()
+    plt.show()
 
 if __name__ == "__main__":
 

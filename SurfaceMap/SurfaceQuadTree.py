@@ -502,7 +502,7 @@ class SurfaceQuadtree:
             fig = plt.figure(figsize=(8,6), layout='constrained')
             ax = fig.add_subplot(111, projection='3d')
 
-        ax.set_aspect('equal', 'box')
+        # ax.set_aspect('equal', 'box')
 
         def draw_plane(node:SurfaceQuadtreeNode):
             if node.is_leaf() and node.points: # and node.is_plane:

@@ -3,7 +3,7 @@ from SurfaceMap import SurfaceMap
 import matplotlib.pyplot as plt
 from plane_analysis_functions import *
 
-from normal_gradients_testing import make_error_gradient_space
+from normal_gradients_testing import make_error_gradient_space,extract_isosurface, plot_isosurface
 
 def random_transformation_matrix(translation_limits, rotation_limits):
     """
@@ -64,8 +64,8 @@ if __name__ == "__main__":
     # data_name = '../000200'
     # test_data_name = '../000201'
     # data_name = '../HAP_sweep_ds'
-    data_name = '../sphere_cube_random'
-    test_data_name = '../sphere_cube_random'
+    data_name = 'sphere_cube_random'
+    test_data_name = 'sphere_cube_random'
     # data_name = '../bavaria_plane_test_section'
     points = np.load(data_name + ".npy")
     normals = np.load(data_name + "_normals.npy")
@@ -112,8 +112,7 @@ if __name__ == "__main__":
     error_vectors, error_points = map.query_points(test_points)
 
     X,Y, Z, vals = make_error_gradient_space(error_vectors)
-
-
+    
     fig = plt.figure(layout="constrained")
     ax = fig.add_subplot(111, projection="3d")
     ax.plot_surface(X[:,:,0],Y[:,:,0],vals[:,:,0], alpha=0.5)
@@ -121,6 +120,13 @@ if __name__ == "__main__":
     # ax.scatter(*test_delta.T, test_grads, s=20, c='b')
     # ax.scatter(*normal_gradient_contour.T,np.ones(normal_gradient_contour.shape[0]), s=20, c='g')
     plt.show()
+
+    isosurface = extract_isosurface(vals, 20)
+    plot_isosurface(*isosurface)
+
+
+
+
 
 
 
